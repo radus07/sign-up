@@ -1,12 +1,14 @@
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UserService } from '@modules/sign-up/services/user.service';
+import { Validator } from '@shared/validators/validator';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpComponent implements OnDestroy {
   public formGroup: FormGroup;
@@ -35,8 +37,10 @@ export class SignUpComponent implements OnDestroy {
     return this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.pattern(Validator.email)]],
       password: ['', Validators.required],
+    }, {
+      validators: Validator.password(),
     });
   }
 }

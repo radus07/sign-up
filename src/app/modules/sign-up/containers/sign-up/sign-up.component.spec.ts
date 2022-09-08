@@ -6,6 +6,7 @@ import { UserService } from '@modules/sign-up/services/user.service';
 import { SignUpComponent } from '@modules/sign-up/containers/sign-up/sign-up.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { of, Subscription } from 'rxjs';
+import { SharedModule } from '@shared/shared.module';
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
@@ -15,7 +16,7 @@ describe('SignUpComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SignUpComponent],
-      imports: [ReactiveFormsModule, MatSnackBarModule, HttpClientTestingModule],
+      imports: [ReactiveFormsModule, MatSnackBarModule, HttpClientTestingModule, SharedModule],
       providers: [UserService, MatSnackBar],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })

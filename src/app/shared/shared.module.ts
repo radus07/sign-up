@@ -5,10 +5,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { FormComponent } from '@shared/components/form/form.component';
+import { FormControlPipe } from './pipes/form-control.pipe';
 
 @NgModule({
   declarations: [
     FormComponent,
+    FormControlPipe,
   ],
   imports: [
     CommonModule,
@@ -19,6 +21,7 @@ import { FormComponent } from '@shared/components/form/form.component';
   ],
   exports: [
     FormComponent,
+    FormControlPipe,
   ],
 })
 export class SharedModule {}

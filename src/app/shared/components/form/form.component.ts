@@ -7,5 +7,5 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent {
-  @Input() title: string = '';
+  @Input() public title: string = '';
 }

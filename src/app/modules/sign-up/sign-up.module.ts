@@ -9,6 +9,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SignUpComponent } from '@modules/sign-up/containers/sign-up/sign-up.component';
 import { SignUpRoutingModule } from '@modules/sign-up/sign-up-routing.module';
 import { UserService } from '@modules/sign-up/services/user.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { UserService } from '@modules/sign-up/services/user.service';
     MatSnackBarModule,
     ReactiveFormsModule,
     SignUpRoutingModule,
+    HttpClientModule,
     SharedModule,
   ],
   providers: [UserService],

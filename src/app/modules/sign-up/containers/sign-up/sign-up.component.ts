@@ -2,7 +2,9 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UserService } from '@modules/sign-up/services/user.service';
-import { Validator } from '@shared/validators/validator';
+import { SignUpValidators } from '@modules/sign-up/validators/sign-up-validators';
+import { FormUtilsService } from '@shared/services/form-utils.service';
+import { SingUpForm } from '@modules/sign-up/models/sing-up-form.model';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,12 +13,13 @@ import { Validator } from '@shared/validators/validator';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUpComponent implements OnDestroy {
-  public formGroup: FormGroup;
+  public formGroup: SingUpForm;
   private subscription: Subscription | null = null;
 
   constructor(
+    public readonly userService: UserService,
     private readonly formBuilder: FormBuilder,
-    private readonly userService: UserService,
+    private readonly formUtilsService: FormUtilsService,
   ) {
     this.formGroup = this.buildSignUpForm();
   }
@@ -27,20 +30,25 @@ export class SignUpComponent implements OnDestroy {
 
   public handleFormSubmit(): void {
     if (this.formGroup.valid) {
-      this.subscription = this.userService.save(this.formGroup.value).subscribe((isSaved: boolean) => (isSaved && this.formGroup.reset()));
+      this.subscription = this.userService.save(this.formGroup.getRawValue()).subscribe((isSaved: boolean) => (isSaved && this.formGroup.reset()));
     } else {
-      this.formGroup.markAllAsTouched();
+      this.formUtilsService.validateFormFields(this.formGroup);
     }
   }
 
   private buildSignUpForm(): FormGroup {
-    return this.formBuilder.group({
+    return this.formBuilder.nonNullable.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.pattern(Validator.email)]],
-      password: ['', Validators.required],
-    }, {
-      validators: Validator.password(),
+      email: ['', [Validators.required, Validators.pattern(SignUpValidators.email)]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        SignUpValidators.containsUpperCaseLetter(),
+        SignUpValidators.containsLowerCaseLetter(),
+        SignUpValidators.notContainsTargetValue('firstName'),
+        SignUpValidators.notContainsTargetValue('lastName'),
+      ]],
     });
   }
 }

@@ -1,55 +1,62 @@
-import { TestBed } from '@angular/core/testing';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '@modules/sign-up/services/user.service';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@env/environment';
+import { MockService } from 'ng-mocks';
+import { HttpClient } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
+import { User } from '@modules/sign-up/models/user.model';
 
 describe('UserService', () => {
   let service: UserService;
-  let httpClient: HttpTestingController;
+  let httpClient: HttpClient;
   let snackBar: MatSnackBar;
+  let user: User;
+  const apiUrl = `${environment.apiUrl}users`;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, HttpClientTestingModule],
-      providers: [UserService, MatSnackBar],
-    });
-    service = TestBed.inject(UserService);
-    httpClient = TestBed.inject(HttpTestingController);
-    snackBar = TestBed.inject(MatSnackBar);
+    user = {} as User;
+    snackBar = MockService(MatSnackBar);
+    httpClient = MockService(HttpClient);
+    service = new UserService(snackBar, httpClient);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return true and open the snackBar with success message', async () => {
-    jest.spyOn(snackBar, 'open');
-    service.save({
-      firstName: 'T',
-      lastName: 'T',
-      email: 't@t.t',
-      password: ' T',
-    }).subscribe(response => expect(response).toEqual(true));
+  describe('save', () => {
+    it('should request api endpoint', () => {
+      const spy = jest.fn();
+      const spyLoading = jest.fn();
 
-    const request = httpClient.expectOne(`${environment.apiUrl}users`);
-    request.flush(true);
-    httpClient.verify();
-    expect(snackBar.open).toHaveBeenCalledWith('User have been successfully saved!', '', { duration: 5000 });
-  });
+      jest.spyOn(httpClient, 'post').mockReturnValue(of(true));
+      jest.spyOn(snackBar, 'open');
 
-  it('should return false and open the snackBar with error message', async () => {
-    jest.spyOn(snackBar, 'open');
-    service.save({
-      firstName: 'T',
-      lastName: 'T',
-      email: 't@t.t',
-      password: ' T',
-    }).subscribe(response => expect(response).toEqual(false));
+      service.loading$.subscribe(spyLoading)
+      service.save(user).subscribe(spy);
 
-    const request = httpClient.expectOne(`${environment.apiUrl}users`);
-    request.error(new ProgressEvent('failed'));
-    httpClient.verify();
-    expect(snackBar.open).toHaveBeenCalledWith('Something went wrong. Please try again!', '', { duration: 5000 });
+      expect(httpClient.post).toHaveBeenCalledWith(apiUrl, user);
+      expect(spy).toHaveBeenCalledWith(true);
+
+      expect(snackBar.open).toHaveBeenCalledWith('User have been successfully saved!', '', { duration: 5000 });
+      expect(spyLoading.mock.calls).toEqual([[false], [true], [false]]);
+    });
+
+    it('should fail', () => {
+      const spy = jest.fn();
+      const spyLoading = jest.fn();
+
+      jest.spyOn(httpClient, 'post').mockReturnValue(throwError(() => new Error()));
+      jest.spyOn(snackBar, 'open');
+
+      service.loading$.subscribe(spyLoading)
+      service.save(user).subscribe(spy);
+
+      expect(httpClient.post).toHaveBeenCalledWith(apiUrl, user);
+      expect(spy).toHaveBeenCalledWith(false);
+
+      expect(snackBar.open).toHaveBeenCalledWith('Something went wrong. Please try again!', '', { duration: 5000 });
+      expect(spyLoading.mock.calls).toEqual([[false], [true], [false]]);
+    });
   });
 });

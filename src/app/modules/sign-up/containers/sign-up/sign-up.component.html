@@ -25,5 +25,7 @@
     </mat-error>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="handleFormSubmit()">Sign up</button>
+  <button [disabled]="userService.loading$ | async" mat-raised-button color="primary" (click)="handleFormSubmit()">
+    Sign up
+  </button>
 </app-form>

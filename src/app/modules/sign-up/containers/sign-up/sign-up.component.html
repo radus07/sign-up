@@ -1,31 +1,37 @@
-<app-form [formGroup]="formGroup" [title]="'Sign up'">
+<app-form [formGroup]="formGroup" [title]="'signUp.form.title.label' | translate">
   <mat-form-field appearance="standard">
-    <mat-label>First name</mat-label>
+    <mat-label>{{ 'signUp.form.firstName.label' | translate }}</mat-label>
     <input matInput formControlName="firstName">
-    <mat-error *ngIf="(formGroup | formControl: 'firstName')?.invalid">First name is required.</mat-error>
+    <mat-error *ngIf="(formGroup | formControl: 'firstName')?.invalid">
+      {{ 'signUp.form.validations.invalidFirstName.label' | translate }}
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="standard">
-    <mat-label>Last name</mat-label>
+    <mat-label>{{ 'signUp.form.lastName.label' | translate }}</mat-label>
     <input matInput formControlName="lastName">
-    <mat-error *ngIf="(formGroup | formControl: 'lastName')?.invalid">Last name is required.</mat-error>
+    <mat-error *ngIf="(formGroup | formControl: 'lastName')?.invalid">
+      {{ 'signUp.form.validations.invalidLastName.label' | translate }}
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="standard">
-    <mat-label>Email</mat-label>
+    <mat-label>{{ 'signUp.form.email.label' | translate }}</mat-label>
     <input matInput formControlName="email">
-    <mat-error *ngIf="(formGroup | formControl: 'email')?.invalid">Email is invalid.</mat-error>
+    <mat-error *ngIf="(formGroup | formControl: 'email')?.invalid">
+      {{ 'signUp.form.validations.invalidEmail.label' | translate }}
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="standard">
-    <mat-label>Password</mat-label>
+    <mat-label>{{ 'signUp.form.password.label' | translate }}</mat-label>
     <input matInput type="password" formControlName="password">
     <mat-error *ngIf="(formGroup | formControl: 'password')?.invalid">
-      Password should be at least 8 characters, lower and uppercase letters, should not contain First or Last name.
+      {{ 'signUp.form.validations.invalidPassword.label' | translate }}
     </mat-error>
   </mat-form-field>
 
   <button [disabled]="userService.loading$ | async" mat-raised-button color="primary" (click)="handleFormSubmit()">
-    Sign up
+    {{ 'signUp.form.button.label' | translate }}
   </button>
 </app-form>

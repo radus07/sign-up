@@ -7,6 +7,7 @@ import { Environment } from '@env/environment.model';
 export const environment: Environment = {
   production: false,
   apiUrl: 'https://demo-api.now.sh/',
+  defaultLanguage: 'en',
 };
 
 /*

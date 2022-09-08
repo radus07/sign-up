@@ -10,6 +10,7 @@ import { SignUpComponent } from '@modules/sign-up/containers/sign-up/sign-up.com
 import { SignUpRoutingModule } from '@modules/sign-up/sign-up-routing.module';
 import { UserService } from '@modules/sign-up/services/user.service';
 import { HttpClientModule } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     SignUpRoutingModule,
     HttpClientModule,
     SharedModule,
+    TranslateModule,
   ],
   providers: [UserService],
 })

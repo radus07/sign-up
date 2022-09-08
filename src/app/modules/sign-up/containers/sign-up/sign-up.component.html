@@ -1,37 +1,41 @@
 <app-form [formGroup]="formGroup" [title]="'signUp.form.title.label' | translate">
   <mat-form-field appearance="standard">
-    <mat-label>{{ 'signUp.form.firstName.label' | translate }}</mat-label>
-    <input matInput formControlName="firstName">
-    <mat-error *ngIf="(formGroup | formControl: 'firstName')?.invalid">
-      {{ 'signUp.form.validations.invalidFirstName.label' | translate }}
+    <mat-label translate="signUp.form.firstName.label"></mat-label>
+    <input matInput formControlName="firstName" [attr.data-cy]="'firstName'">
+    <mat-error *ngIf="(formGroup | formControl: 'firstName')?.invalid"
+               translate="signUp.form.validations.invalidFirstName.label">
     </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="standard">
-    <mat-label>{{ 'signUp.form.lastName.label' | translate }}</mat-label>
-    <input matInput formControlName="lastName">
-    <mat-error *ngIf="(formGroup | formControl: 'lastName')?.invalid">
-      {{ 'signUp.form.validations.invalidLastName.label' | translate }}
+    <mat-label translate="signUp.form.lastName.label"></mat-label>
+    <input matInput formControlName="lastName" [attr.data-cy]="'lastName'">
+    <mat-error *ngIf="(formGroup | formControl: 'lastName')?.invalid"
+    translate="signUp.form.validations.invalidLastName.label">
     </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="standard">
-    <mat-label>{{ 'signUp.form.email.label' | translate }}</mat-label>
-    <input matInput formControlName="email">
-    <mat-error *ngIf="(formGroup | formControl: 'email')?.invalid">
-      {{ 'signUp.form.validations.invalidEmail.label' | translate }}
+    <mat-label translate="signUp.form.email.label"></mat-label>
+    <input matInput formControlName="email" [attr.data-cy]="'email'">
+    <mat-error *ngIf="(formGroup | formControl: 'email')?.invalid"
+    translate="signUp.form.validations.invalidEmail.label">
     </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="standard">
-    <mat-label>{{ 'signUp.form.password.label' | translate }}</mat-label>
-    <input matInput type="password" formControlName="password">
-    <mat-error *ngIf="(formGroup | formControl: 'password')?.invalid">
-      {{ 'signUp.form.validations.invalidPassword.label' | translate }}
+    <mat-label translate="signUp.form.password.label"></mat-label>
+    <input matInput type="password" formControlName="password" [attr.data-cy]="'password'">
+    <mat-error *ngIf="(formGroup | formControl: 'password')?.invalid"
+    translate="signUp.form.validations.invalidPassword.label">
     </mat-error>
   </mat-form-field>
 
-  <button [disabled]="userService.loading$ | async" mat-raised-button color="primary" (click)="handleFormSubmit()">
-    {{ 'signUp.form.button.label' | translate }}
+  <button [disabled]="userService.loading$ | async"
+          [attr.data-cy]="'signUp'"
+          mat-raised-button
+          color="primary"
+          translate="signUp.form.button.label"
+          (click)="handleFormSubmit()">
   </button>
 </app-form>

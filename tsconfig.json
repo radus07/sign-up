@@ -27,8 +27,10 @@
       "@shared/*": ["src/app/shared/*"],
       "@env/*": ["src/environments/*"],
       "@translations/*": ["src/assets/translations/*"]
-    }
+    },
+    "types": ["jest", "node", "@types/testing-library__jest-dom"]
   },
+  "exclude": ["node_modules", "cypress", "./cypress.config.ts"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
